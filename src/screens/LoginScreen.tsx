@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,6 +19,7 @@ type FormData = z.infer<typeof schema>;
 export default function LoginScreen({ navigation }: any) {
   const { width } = useWindowDimensions();
   const isWide = width >= 900;
+  const [showPassword, setShowPassword] = useState(false);
 
   // Valores responsivos
   const containerPaddingH = isWide ? 32 : 16;
@@ -50,8 +51,14 @@ export default function LoginScreen({ navigation }: any) {
 
 
         <View style={[styles.heroWrapper, { maxWidth: wrapperMaxWidth }] }>
-          <View style={isWide ? styles.heroRow : styles.heroColumn}>
-            <View style={[styles.formPanel, isWide ? { flexBasis: formBasis } : {}] }>
+          <View style={styles.heroColumn}>
+            <View style={[styles.brandPanel, { padding: brandCardPadding, minHeight: isWide ? undefined : 120 }] }>
+              <Image source={require('../../assets/images/logolexianombre.png')} style={[styles.brandImage, { width: brandWidth, height: brandHeight }]} />
+            </View>
+            <View style={styles.welcomeCard}>
+              <Text style={styles.welcomeText}>Bienvenido a Lexi IA, tu asistente legal</Text>
+            </View>
+            <View style={[styles.formPanel] }>
               <View style={styles.formCard}>
                 <Text style={styles.title}>Iniciar sesión</Text>
 
@@ -75,13 +82,18 @@ export default function LoginScreen({ navigation }: any) {
                   control={control}
                   name="password"
                   render={({ field: { onChange, value } }) => (
-                    <TextInput
-                      placeholder="Contraseña"
-                      secureTextEntry
-                      style={styles.input}
-                      value={value ?? ''}
-                      onChangeText={onChange}
-                    />
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <TextInput
+                        placeholder="Contraseña"
+                        secureTextEntry={!showPassword}
+                        style={[styles.input, { flex: 1 }]}
+                        value={value ?? ''}
+                        onChangeText={onChange}
+                      />
+                      <TouchableOpacity onPress={() => setShowPassword(v => !v)} style={{ marginLeft: 8, paddingHorizontal: 10, paddingVertical: 8, borderRadius: 8, backgroundColor: LegalTheme.colors.surfaceVariant, borderWidth: 1, borderColor: LegalTheme.colors.border }}>
+                        <Text style={{ color: LegalTheme.colors.primary, fontWeight: '600' }}>{showPassword ? 'Ocultar' : 'Ver'}</Text>
+                      </TouchableOpacity>
+                    </View>
                   )}
                 />
                 {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
@@ -90,18 +102,9 @@ export default function LoginScreen({ navigation }: any) {
                   {loading ? <ActivityIndicator color={LegalTheme.colors.surface} /> : <Text style={styles.buttonText}>Iniciar sesión</Text>}
                 </TouchableOpacity>
               </View>
-
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.link}>Crear cuenta</Text>
               </TouchableOpacity>
-            </View>
-            <View style={isWide ? styles.rightColumn : undefined}>
-              <View style={[styles.brandPanel, { padding: brandCardPadding, minHeight: isWide ? undefined : 120 }] }>
-                <Image source={require('../../assets/images/logolexianombre.png')} style={[styles.brandImage, { width: brandWidth, height: brandHeight }]} />
-              </View>
-              <View style={styles.welcomeCard}>
-                <Text style={styles.welcomeText}>Bienvenido a Lexi IA, tu asistente legal</Text>
-              </View>
             </View>
           </View>
         </View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, TextInput, Modal, Pressable, useWindowDimensions } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, TextInput, Modal, Pressable, useWindowDimensions, ScrollView } from 'react-native';
 import { useAuth } from '../hooks/useAuth';
 import { api } from '../api/client';
 import { z } from 'zod';
@@ -371,7 +371,8 @@ export default function AdminUsersScreen({ navigation }: any) {
   // Tabla de usuarios (lista con encabezados clicables)
   const UsersTable: React.FC = () => (
     <ScrollContainer style={styles.screen} contentContainerStyle={styles.container}>
-      <View style={[styles.table, { minWidth: isSmall ? 980 : 1200 }] }>
+      <ScrollView horizontal showsHorizontalScrollIndicator>
+        <View style={[styles.table, { minWidth: isSmall ? 980 : 1200 }] }>
         <View style={styles.tableHeader}>
           <TouchableOpacity style={[styles.th, colStyles.email]} onPress={() => toggleSort('email')}><Text style={styles.thText}>Email {sortBy==='email' ? (sortOrder==='asc'?'▲':'▼') : ''}</Text></TouchableOpacity>
           <TouchableOpacity style={[styles.th, colStyles.full_name]} onPress={() => toggleSort('full_name')}><Text style={styles.thText}>Nombre completo {sortBy==='full_name' ? (sortOrder==='asc'?'▲':'▼') : ''}</Text></TouchableOpacity>
@@ -408,7 +409,8 @@ export default function AdminUsersScreen({ navigation }: any) {
             scrollEnabled={false}
           />
         )}
-      </View>
+        </View>
+      </ScrollView>
     </ScrollContainer>
   );
  
@@ -439,11 +441,19 @@ export default function AdminUsersScreen({ navigation }: any) {
 
   return (
     <ScrollContainer style={styles.screen} contentContainerStyle={styles.container}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <Text style={styles.title}>Administración de Usuarios</Text>
-        <TouchableOpacity style={[styles.smallBtn, styles.smallBtnDanger]} onPress={logout}>
-          <Text style={styles.smallBtnText}>Cerrar sesión</Text>
-        </TouchableOpacity>
+      <View style={isSmall ? styles.headerColumn : styles.headerRow}>
+        <Text style={[styles.title, isSmall ? styles.headerTitleSmall : undefined]}>Administración de Usuarios</Text>
+        {isSmall ? (
+          <View style={styles.headerActions}>
+            <TouchableOpacity style={[styles.smallBtn, styles.smallBtnDanger]} onPress={logout}>
+              <Text style={styles.smallBtnText}>Cerrar sesión</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity style={[styles.smallBtn, styles.smallBtnDanger]} onPress={logout}>
+            <Text style={styles.smallBtnText}>Cerrar sesión</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <FiltersBar />
       <UsersTable />
@@ -523,5 +533,9 @@ const styles = StyleSheet.create({
   modalCard: { width: '90%', backgroundColor: '#fff', borderRadius: 12, padding: 16 },
   modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 12 },
   formRow: { marginBottom: 10 },
-  error: { color: 'red', marginTop: 4 }
+  error: { color: 'red', marginTop: 4 },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  headerColumn: { flexDirection: 'column', alignItems: 'flex-start', gap: 8, marginBottom: 12 },
+  headerActions: { alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end' },
+  headerTitleSmall: { flexShrink: 1 }
 });

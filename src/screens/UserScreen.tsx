@@ -126,7 +126,7 @@ export default function HomeScreen() {
             <View style={styles.headerTop}>
               <View style={styles.logoContainer}>
                 <Image 
-                  source={require('../../assets/images/icon.png')} 
+                  source={require('../../assets/images/lexialogo.png')} 
                   style={styles.logoImageMain}
                   resizeMode="contain"
                 />
@@ -279,7 +279,7 @@ export default function HomeScreen() {
         <View style={styles.infoSection}>
           <View style={styles.infoCard}>
             <Image 
-              source={require('../../assets/images/icon.png')} 
+              source={require('../../assets/images/lexialogo.png')} 
               style={styles.logoImageInfo}
               resizeMode="contain"
             />
@@ -345,12 +345,10 @@ const styles = StyleSheet.create({
   logoImageMain: {
     width: 32,
     height: 32,
-    tintColor: 'white',
   },
   logoImageInfo: {
     width: 24,
     height: 24,
-    tintColor: LegalTheme.colors.primary,
   },
   appTitle: {
     fontSize: 28,

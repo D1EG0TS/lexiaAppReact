@@ -1,8 +1,5 @@
 import axios from 'axios';
-
-// Configuración de la API
-// Para desarrollo móvil, usar la IP de la red local en lugar de localhost
-const API_BASE_URL = 'http://192.168.1.108:8001'; // IP de la red local para acceso desde smartphones
+import { LEGAL_API_URL } from '../config';
 
 // Tipos para la API Legal
 export interface ConsultaLegal {
@@ -56,8 +53,8 @@ class ApiService {
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: API_BASE_URL,
-      timeout: 100000, // 30 segundos
+      baseURL: LEGAL_API_URL,
+      timeout: 100000,
       headers: {
         'Content-Type': 'application/json',
       },

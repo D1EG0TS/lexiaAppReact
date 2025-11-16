@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '400',
     marginBottom: 16,
     textAlign: 'center',
     color: LegalTheme.colors.text,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     color: LegalTheme.colors.text,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'center',
   },
   brandImage: {

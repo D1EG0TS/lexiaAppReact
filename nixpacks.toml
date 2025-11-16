@@ -1,0 +1,10 @@
+[
+  phases.build
+]
+cmds = [
+  "npm ci",
+  "npm run build:web"
+]
+
+[start]
+cmd = "npm run start:web"
